@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHINAMAXX ($MAXX)</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
 <style>
-body {
+body{
   margin:0;
   font-family:'ZCOOL KuaiLe', cursive;
   background:url("4.jpg") no-repeat center center fixed;
@@ -16,143 +17,93 @@ body {
   text-align:center;
 }
 
-/* dark overlay */
-body::before{
-  content:"";
+.overlay{
   position:fixed;
   top:0;left:0;
   width:100%;height:100%;
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.65);
   z-index:-1;
 }
 
+.container{ padding:15px; }
+
 h1{
   font-family:'Luckiest Guy', cursive;
-  font-size:60px;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000,
-               -2px 2px 0 #000, 2px 2px 0 #000, 4px 4px 10px black;
+  font-size:42px;
+  margin-top:20px;
+  text-shadow:2px 2px 8px black;
 }
 
-h2{ text-shadow:2px 2px 6px black; }
-
-.container{
-  padding:20px;
-  border:6px solid gold;
-  margin:15px;
-  border-radius:25px;
-  background:rgba(0,0,0,0.65);
+h2{
+  font-size:18px;
+  margin-bottom:15px;
+  text-shadow:1px 1px 5px black;
 }
+
+.slider{
+  position:relative;
+  overflow:hidden;
+}
+
+.slider img{
+  width:85%;
+  border-radius:20px;
+  box-shadow:0 0 20px black;
+  transition:0.3s;
+}
+
+.buttons button{
+  width:90%;
+  padding:16px;
+  margin:10px auto;
+  display:block;
+  font-size:18px;
+  border:none;
+  border-radius:20px;
+  font-family:'ZCOOL KuaiLe', cursive;
+}
+
+.buy{background:linear-gradient(to right,gold,orange);}
+.xbtn{background:black;color:white;}
+.lang{background:linear-gradient(to right,pink,violet);}
 
 .box{
-  background:rgba(0,0,0,0.75);
-  padding:20px;
-  margin:25px auto;
+  background:rgba(0,0,0,0.7);
+  margin:15px auto;
+  padding:15px;
   border-radius:20px;
-  max-width:750px;
-  box-shadow:0 0 20px black;
-  opacity:0;
-  transform:translateY(40px);
-  transition:1s;
-}
-
-.box.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.slideshow img{
-  width:260px;
-  border-radius:20px;
-  box-shadow:0 0 25px black;
-  animation:float 3s ease-in-out infinite;
-  cursor:pointer;
-}
-
-@keyframes float{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-12px);}
-  100%{transform:translateY(0);}
-}
-
-button{
-  padding:15px 30px;
-  margin:10px;
-  border:none;
-  border-radius:18px;
-  font-size:18px;
-  cursor:pointer;
-  font-family:'ZCOOL KuaiLe', cursive;
   box-shadow:0 0 15px black;
 }
 
-.buy{
-  background:linear-gradient(to right,gold,orange);
-  animation:pulse 1.5s infinite;
-}
-
-.copy{background:linear-gradient(to right,cyan,lime);}
-.lang{background:linear-gradient(to right,pink,violet);}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
-}
-
-/* lightbox */
-#lightbox{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.9);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-#lightbox img{
-  max-width:90%;
-  max-height:90%;
-  border-radius:20px;
-}
-
 footer{
-  margin-top:20px;
   font-size:12px;
-  opacity:0.9;
-  text-shadow:1px 1px 4px black;
+  margin-top:20px;
+  opacity:0.8;
 }
 </style>
 </head>
 
 <body>
+<div class="overlay"></div>
 
 <div class="container">
 
 <h1>CHINAMAXX ($MAXX)</h1>
 <h2 id="quote"></h2>
 
-<div class="slideshow">
-  <img id="slide" src="1.jpg" onclick="openLightbox(this.src)">
+<div class="slider" id="slider">
+  <img id="slide" src="1.jpg">
 </div>
 
+<div class="buttons">
 <button class="buy" onclick="window.open('https://pump.fun','_blank')">💰 BUY</button>
-<button class="buy" onclick="window.open('https://x.com/ydnn083254','_blank')">❌ X</button>
+<button class="xbtn" onclick="window.open('https://x.com/ydnn083254','_blank')">❌ X</button>
+</div>
 
 <div>
 <button class="lang" onclick="setLang('en')">EN</button>
 <button class="lang" onclick="setLang('kr')">KR</button>
 <button class="lang" onclick="setLang('cn')">CN</button>
-</div>
-
-<div class="box">
-<h3>Contract</h3>
-<p id="ca">0x000000000000000000000000000000000000MAXX</p>
-<button class="copy" onclick="copyCA()">Copy Contract</button>
-</div>
-
-<div class="box">
-<h3 id="countdown"></h3>
 </div>
 
 <div class="box">
@@ -173,17 +124,44 @@ footer{
 
 </div>
 
-<div id="lightbox" onclick="closeLightbox()">
-<img id="lightboxImg">
-</div>
-
 <script>
 const images=["1.jpg","2.jpg","3.jpg"];
-let i=0;
-setInterval(()=>{
- i=(i+1)%images.length;
- document.getElementById("slide").src=images[i];
-},2000);
+let currentIndex=0;
+const slide=document.getElementById("slide");
+
+function showImage(){
+ slide.src=images[currentIndex];
+}
+
+let startX=0;
+let endX=0;
+
+slide.addEventListener("touchstart",e=>{
+ startX=e.touches[0].clientX;
+});
+
+slide.addEventListener("touchend",e=>{
+ endX=e.changedTouches[0].clientX;
+ if(startX-endX>50){
+   nextImage();
+ }
+ if(endX-startX>50){
+   prevImage();
+ }
+});
+
+function nextImage(){
+ currentIndex=(currentIndex+1)%images.length;
+ showImage();
+}
+
+function prevImage(){
+ currentIndex=(currentIndex-1+images.length)%images.length;
+ showImage();
+}
+
+/* auto slide */
+setInterval(nextImage,3000);
 
 const quotes=[
 "Moon is mandatory.",
@@ -195,27 +173,12 @@ const quotes=[
 document.getElementById("quote").innerText=
 quotes[Math.floor(Math.random()*quotes.length)];
 
-function copyCA(){
- navigator.clipboard.writeText(document.getElementById("ca").innerText);
- alert("Contract copied!");
-}
-
-const moonDate=new Date("2026-12-31T00:00:00").getTime();
-setInterval(()=>{
- const now=new Date().getTime();
- const d=moonDate-now;
- const days=Math.floor(d/(1000*60*60*24));
- const h=Math.floor((d%(1000*60*60*24))/(1000*60*60));
- const m=Math.floor((d%(1000*60*60))/(1000*60));
- document.getElementById("countdown").innerText="Wen Moon: "+days+"d "+h+"h "+m+"m";
-},1000);
-
 const langData={
  en:{about:"A panda-powered meme coin marching to the moon.",
  faq1:"What is CHINAMAXX? Meme coin.",
  faq2:"Financial advice? No.",
  faq3:"Wen moon? Tomorrow."},
- kr:{about:"달로 행진하는 판다 밈코인.",
+ kr:{about:"달로 가는 판다 밈코인.",
  faq1:"CHINAMAXX란? 판다 밈코인.",
  faq2:"투자 조언인가요? 아닙니다.",
  faq3:"언제 문? 내일."},
@@ -232,26 +195,6 @@ function setLang(l){
  document.getElementById("faq3").innerText=langData[l].faq3;
 }
 setLang("en");
-
-/* lightbox */
-function openLightbox(src){
- document.getElementById("lightbox").style.display="flex";
- document.getElementById("lightboxImg").src=src;
-}
-function closeLightbox(){
- document.getElementById("lightbox").style.display="none";
-}
-
-/* scroll animation */
-const boxes=document.querySelectorAll(".box");
-window.addEventListener("scroll",()=>{
- boxes.forEach(b=>{
-   const top=b.getBoundingClientRect().top;
-   if(top<window.innerHeight-100){
-     b.classList.add("show");
-   }
- });
-});
 </script>
 
 </body>
