@@ -9,112 +9,123 @@
 <style>
 body {
   margin:0;
-  font-family: 'ZCOOL KuaiLe', cursive;
-  background: radial-gradient(circle, #c62828, #fbc02d);
+  font-family:'ZCOOL KuaiLe', cursive;
+  background:url("4.jpg") no-repeat center center fixed;
+  background-size:cover;
   color:white;
   text-align:center;
-  overflow-x:hidden;
 }
 
-h1 {
-  font-family: 'Luckiest Guy', cursive;
+/* dark overlay */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  z-index:-1;
+}
+
+h1{
+  font-family:'Luckiest Guy', cursive;
   font-size:60px;
-  text-shadow: 4px 4px black;
-  animation: glow 2s infinite alternate;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000,
+               -2px 2px 0 #000, 2px 2px 0 #000, 4px 4px 10px black;
 }
 
-@keyframes glow {
-  from {text-shadow: 2px 2px 10px gold;}
-  to {text-shadow: 2px 2px 30px red;}
-}
+h2{ text-shadow:2px 2px 6px black; }
 
-.container {
+.container{
   padding:20px;
-  border:8px solid gold;
-  margin:10px;
+  border:6px solid gold;
+  margin:15px;
   border-radius:25px;
-  background: rgba(0,0,0,0.35);
+  background:rgba(0,0,0,0.65);
 }
 
-.cloud {
-  position: fixed;
-  top:10%;
-  width:200px;
-  opacity:0.5;
-  animation: moveCloud 30s linear infinite;
-}
-.cloud2 {
-  top:40%;
-  animation-duration: 45s;
-}
-
-@keyframes moveCloud {
-  from {left:-200px;}
-  to {left:100%;}
+.box{
+  background:rgba(0,0,0,0.75);
+  padding:20px;
+  margin:25px auto;
+  border-radius:20px;
+  max-width:750px;
+  box-shadow:0 0 20px black;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s;
 }
 
-.slideshow img {
+.box.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.slideshow img{
   width:260px;
   border-radius:20px;
-  box-shadow: 0 0 20px black;
-  animation: float 3s ease-in-out infinite;
+  box-shadow:0 0 25px black;
+  animation:float 3s ease-in-out infinite;
+  cursor:pointer;
 }
 
-@keyframes float {
-  0% {transform: translateY(0px);}
-  50% {transform: translateY(-12px);}
-  100% {transform: translateY(0px);}
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+  100%{transform:translateY(0);}
 }
 
-button {
-  padding:15px 25px;
+button{
+  padding:15px 30px;
   margin:10px;
   border:none;
-  border-radius:15px;
+  border-radius:18px;
   font-size:18px;
   cursor:pointer;
-  font-family: 'ZCOOL KuaiLe', cursive;
-  animation: wiggle 1.5s infinite;
+  font-family:'ZCOOL KuaiLe', cursive;
+  box-shadow:0 0 15px black;
 }
 
-@keyframes wiggle {
-  0% {transform: rotate(0deg);}
-  25% {transform: rotate(1deg);}
-  50% {transform: rotate(-1deg);}
-  75% {transform: rotate(1deg);}
-  100% {transform: rotate(0deg);}
+.buy{
+  background:linear-gradient(to right,gold,orange);
+  animation:pulse 1.5s infinite;
 }
 
-.buy { background: linear-gradient(to right, gold, orange); }
-.copy { background: linear-gradient(to right, cyan, lime); }
-.lang { background: linear-gradient(to right, pink, violet); }
+.copy{background:linear-gradient(to right,cyan,lime);}
+.lang{background:linear-gradient(to right,pink,violet);}
 
-.box {
-  background: rgba(0,0,0,0.4);
-  padding:20px;
-  margin:20px auto;
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+
+/* lightbox */
+#lightbox{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+#lightbox img{
+  max-width:90%;
+  max-height:90%;
   border-radius:20px;
-  max-width:700px;
 }
 
-footer {
+footer{
   margin-top:20px;
   font-size:12px;
-  opacity:0.8;
-}
-
-@media (max-width:600px){
- h1{font-size:42px;}
- .slideshow img{width:200px;}
- button{font-size:16px;}
+  opacity:0.9;
+  text-shadow:1px 1px 4px black;
 }
 </style>
 </head>
 
 <body>
-
-<img src="4.jpg" class="cloud">
-<img src="4.jpg" class="cloud cloud2">
 
 <div class="container">
 
@@ -122,7 +133,7 @@ footer {
 <h2 id="quote"></h2>
 
 <div class="slideshow">
-  <img id="slide" src="1.jpg">
+  <img id="slide" src="1.jpg" onclick="openLightbox(this.src)">
 </div>
 
 <button class="buy" onclick="window.open('https://pump.fun','_blank')">💰 BUY</button>
@@ -160,6 +171,10 @@ footer {
 <p>This is a meme coin. Not financial advice.</p>
 </footer>
 
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+<img id="lightboxImg">
 </div>
 
 <script>
@@ -217,6 +232,26 @@ function setLang(l){
  document.getElementById("faq3").innerText=langData[l].faq3;
 }
 setLang("en");
+
+/* lightbox */
+function openLightbox(src){
+ document.getElementById("lightbox").style.display="flex";
+ document.getElementById("lightboxImg").src=src;
+}
+function closeLightbox(){
+ document.getElementById("lightbox").style.display="none";
+}
+
+/* scroll animation */
+const boxes=document.querySelectorAll(".box");
+window.addEventListener("scroll",()=>{
+ boxes.forEach(b=>{
+   const top=b.getBoundingClientRect().top;
+   if(top<window.innerHeight-100){
+     b.classList.add("show");
+   }
+ });
+});
 </script>
 
 </body>
